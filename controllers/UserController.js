@@ -3,7 +3,7 @@ const db = require("../models");
 class UserController {
   index = async (req, res) => {
     const users = await db.user.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["createdAt", "ASC"]],
     });
 
     return res.status(200).json({
