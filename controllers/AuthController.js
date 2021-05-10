@@ -5,6 +5,15 @@ class AuthController {
   register = async (req, res) => {
     let { username, password } = req.body;
 
+    const userExist = db.user.findOne({
+      where: { username: username },
+    });
+    if (userExist) {
+      return res.status(400).json({
+        message: "username has been used",
+      });
+    }
+
     const hashedPassword = await Authentication.passwordHash(password);
 
     const user = await db.user.create({ username, password: hashedPassword });
@@ -58,7 +67,10 @@ class AuthController {
 
     return res.status(200).json({
       message: "success login",
-      data: token,
+      data: {
+        token,
+        user: user.username,
+      },
     });
   };
 }
