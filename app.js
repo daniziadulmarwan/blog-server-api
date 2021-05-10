@@ -5,26 +5,36 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 
-// routes
+// routers
 const indexRouter = require("./routes/index");
 const authRouter = require("./routes/auth");
 const usersRouter = require("./routes/users");
 const blogRouter = require("./routes/blog");
 
-const app = express();
+class App {
+  constructor() {
+    this.app = express();
+    this.uses();
+    this.routes();
+  }
 
-// middlewares
-app.use(logger("dev"));
-app.use(express.json());
-app.use(cors());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+  uses() {
+    // middlewares
+    this.app.use(logger("dev"));
+    this.app.use(express.json());
+    this.app.use(cors());
+    this.app.use(express.urlencoded({ extended: false }));
+    this.app.use(cookieParser());
+    this.app.use(express.static(path.join(__dirname, "public")));
+  }
 
-// routes
-app.use("/", indexRouter);
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/users", usersRouter);
-app.use("/api/v1/blog", blogRouter);
+  routes() {
+    // routes
+    this.app.use("/", indexRouter);
+    this.app.use("/api/v1/auth", authRouter);
+    this.app.use("/api/v1/users", usersRouter);
+    this.app.use("/api/v1/blog", blogRouter);
+  }
+}
 
-module.exports = app;
+module.exports = new App().app;
