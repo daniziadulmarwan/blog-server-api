@@ -11,6 +11,10 @@ class UserController {
       data: users,
     });
   };
+
+  show(req, res) {}
+  update(req, res) {}
+  delete(req, res) {}
 }
 
 module.exports = new UserController();
