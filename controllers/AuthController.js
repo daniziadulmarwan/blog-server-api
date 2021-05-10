@@ -5,12 +5,12 @@ class AuthController {
   register = async (req, res) => {
     let { username, password } = req.body;
 
-    const userExist = db.user.findOne({
-      where: { username: username },
+    const userExist = await db.user.findOne({
+      where: { username },
     });
     if (userExist) {
       return res.status(400).json({
-        message: "username has been used",
+        error: "username has been used",
       });
     }
 
@@ -19,7 +19,7 @@ class AuthController {
     const user = await db.user.create({ username, password: hashedPassword });
     if (!user) {
       return res.status(400).json({
-        message: "failed create user",
+        error: "failed create user",
       });
     }
 
@@ -38,7 +38,7 @@ class AuthController {
     });
     if (!user) {
       return res.status(400).json({
-        message: "user not found",
+        error: "user not found",
       });
     }
 
@@ -49,7 +49,7 @@ class AuthController {
     );
     if (!compare) {
       return res.status(400).json({
-        message: "password not match",
+        error: "password not match",
       });
     }
 
@@ -61,7 +61,7 @@ class AuthController {
     );
     if (!token) {
       return res.status(400).json({
-        message: "failed to generate token",
+        error: "failed to generate token",
       });
     }
 
